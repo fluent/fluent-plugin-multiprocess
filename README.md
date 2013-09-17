@@ -3,6 +3,10 @@
 ## multiprocess
 
 **multiprocess** agent plugin runs some child fluentd processes.
+You can take advantage of multiple CPU cores using this plugin.
+
+Please note that this plugin does not generate records although this is an input plugin.
+This plugin just controls start & shutdown of child processes.
 
 
 ### Configuration
