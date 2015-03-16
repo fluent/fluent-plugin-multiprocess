@@ -33,6 +33,7 @@ module Fluent
       config_param :cmdline, :string
       config_param :sleep_before_start, :time, :default => 0
       config_param :sleep_before_shutdown, :time, :default => 0
+      config_param :keep_file_descriptors, :bool, :default => false
 
       attr_accessor :process_monitor
     end
@@ -65,7 +66,8 @@ module Fluent
         cmd = "#{Shellwords.shellescape(RbConfig.ruby)} #{Shellwords.shellescape(fluentd_rb)} #{pe.cmdline}"
         sleep pe.sleep_before_start if pe.sleep_before_start > 0
         $log.info "launching child fluentd #{pe.cmdline}"
-        pe.process_monitor = @pm.spawn(cmd)
+        options = {:close_others => !pe.keep_file_descriptors}
+        pe.process_monitor = @pm.spawn(cmd, options)
       end
     end
 
