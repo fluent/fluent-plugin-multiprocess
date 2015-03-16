@@ -26,6 +26,7 @@ module Fluent
     config_param :graceful_kill_interval, :time, :default => 2
     config_param :graceful_kill_interval_increment, :time, :default => 3
     config_param :graceful_kill_timeout, :time, :default => 60
+    config_param :keep_file_descriptors, :bool, :default => nil
 
     class ProcessElement
       include Configurable
@@ -33,12 +34,14 @@ module Fluent
       config_param :cmdline, :string
       config_param :sleep_before_start, :time, :default => 0
       config_param :sleep_before_shutdown, :time, :default => 0
-      config_param :keep_file_descriptors, :bool, :default => false
+      config_param :keep_file_descriptors, :bool, :default => nil
 
       attr_accessor :process_monitor
     end
 
     def configure(conf)
+      super
+
       @processes = conf.elements.select {|e|
         e.name == 'process'
       }.map {|e|
@@ -66,7 +69,8 @@ module Fluent
         cmd = "#{Shellwords.shellescape(RbConfig.ruby)} #{Shellwords.shellescape(fluentd_rb)} #{pe.cmdline}"
         sleep pe.sleep_before_start if pe.sleep_before_start > 0
         $log.info "launching child fluentd #{pe.cmdline}"
-        options = {:close_others => !pe.keep_file_descriptors}
+        keep_file_descriptors = pe.keep_file_descriptors.nil? ? @keep_file_descriptors : pe.keep_file_descriptors
+        options = {:close_others => !keep_file_descriptors}
         pe.process_monitor = @pm.spawn(cmd, options)
       end
     end
