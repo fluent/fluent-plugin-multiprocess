@@ -4,7 +4,7 @@ $:.push File.expand_path('../lib', __FILE__)
 Gem::Specification.new do |gem|
   gem.name        = "fluent-plugin-multiprocess"
   gem.description = "Multiprocess agent plugin for Fluentd event collector"
-  gem.homepage    = "https://github.com/frsyuki/fluent-plugin-fluentd"
+  gem.homepage    = "https://github.com/fluent/fluent-plugin-multiprocess"
   gem.summary     = gem.description
   gem.version     = File.read("VERSION").strip
   gem.authors     = ["Sadayuki Furuhashi"]
