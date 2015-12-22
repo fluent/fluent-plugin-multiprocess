@@ -36,6 +36,8 @@ module Fluent
       config_param :sleep_before_shutdown, :time, :default => 0
       config_param :keep_file_descriptors, :bool, :default => nil
 
+      config_param :pid_file, :string, :default => nil
+
       attr_accessor :process_monitor
     end
 
@@ -72,6 +74,8 @@ module Fluent
         keep_file_descriptors = pe.keep_file_descriptors.nil? ? @keep_file_descriptors : pe.keep_file_descriptors
         options = {:close_others => !keep_file_descriptors}
         pe.process_monitor = @pm.spawn(cmd, options)
+
+        create_pid_file(pe) if pe.pid_file
       end
     end
 
@@ -84,6 +88,19 @@ module Fluent
       @processes.each {|pe|
         pe.process_monitor.join
       }
+      @processes.each { |pe|
+        delete_pid_file(pe) if pe.pid_file
+      }
+    end
+
+    def create_pid_file(pe)
+      File.open(pe.pid_file, "w") { |f|
+        f.write pe.process_monitor.instance_variable_get(:@pid)
+      }
+    end
+
+    def delete_pid_file(pe)
+      File.unlink(pe.pid_file) if File.exist?(pe.pid_file)
     end
   end
 
