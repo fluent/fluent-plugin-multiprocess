@@ -35,7 +35,6 @@ module Fluent
       config_param :sleep_before_start, :time, :default => 0
       config_param :sleep_before_shutdown, :time, :default => 0
       config_param :keep_file_descriptors, :bool, :default => nil
-
       config_param :pid_file, :string, :default => nil
 
       attr_accessor :process_monitor
@@ -95,7 +94,7 @@ module Fluent
 
     def create_pid_file(pe)
       File.open(pe.pid_file, "w") { |f|
-        f.write pe.process_monitor.instance_variable_get(:@pid)
+        f.write pe.process_monitor.pid
       }
     end
 
