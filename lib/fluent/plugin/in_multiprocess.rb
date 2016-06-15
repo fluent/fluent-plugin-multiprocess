@@ -15,8 +15,9 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 #
-module Fluent
+require 'fluent/input'
 
+module Fluent
   class MultiprocessInput < Input
     Plugin.register_input('multiprocess', self)
 
@@ -53,6 +54,8 @@ module Fluent
     end
 
     def start
+      super
+
       @pm = ServerEngine::ProcessManager.new(
         :auto_tick => true,
         :auto_tick_interval => 1,
@@ -79,6 +82,8 @@ module Fluent
     end
 
     def shutdown
+      super
+
       @processes.each {|pe|
         sleep pe.sleep_before_shutdown if pe.sleep_before_shutdown > 0
         $log.info "shutting down child fluentd #{pe.cmdline}"
