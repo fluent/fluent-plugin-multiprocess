@@ -18,6 +18,6 @@ Gem::Specification.new do |gem|
   gem.license = "Apache 2.0"
 
   gem.add_dependency "fluentd", [">= 0.10.0", "< 2"]
-  gem.add_dependency "serverengine", "~> 1.6"
+  gem.add_dependency "serverengine", ">= 1.6"
   gem.add_development_dependency "rake", ">= 0.9.2"
 end
