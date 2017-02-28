@@ -44,3 +44,7 @@ This plugin just controls start & shutdown of child processes.
 ### Logs for daemonized processes
 
 Daemonized fluentd closes its STDOUT. So child processes on daemonized fluentd & in_multiprocess doesn't put its logs without `--log` option. Specifing `--log` option always is best practice to help this situation.
+
+### NOTE
+
+You should use unique parameter in each sub configuration to avoid conflict problem, e.g. buffer_path of `buf_file`, `s3_object_key_format` of `out_s3` and more.
