@@ -12,7 +12,7 @@ This plugin just controls start & shutdown of child processes.
 ### Configuration
 
     <source>
-      type multiprocess
+      @type multiprocess
 
       # optional:
       #graceful_kill_interval 2s
