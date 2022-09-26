@@ -48,3 +48,6 @@ Daemonized fluentd closes its STDOUT. So child processes on daemonized fluentd &
 ### NOTE
 
 You should use unique parameter in each sub configuration to avoid conflict problem, e.g. buffer_path of `buf_file`, `s3_object_key_format` of `out_s3` and more.
+
+This plugin is mainly for Fluentd v0.x, since Fluentd v1.x has [multi-process-workers feature](https://docs.fluentd.org/deployment/multi-process-workers).
+However, you can still use this plugin for Fluentd v1.x to run plugins that don't support the feature in multiple processes (with special care of the configuration to avoid race).
